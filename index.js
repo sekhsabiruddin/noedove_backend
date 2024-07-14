@@ -17,7 +17,7 @@ const wss = new WebSocket.Server({ server });
 
 app.use(
   cors({
-    origin: "https://neodove-frontend.vercel.app",
+    origin: ["https://neodove-frotned.vercel.app"],
     credentials: true,
   })
 );
