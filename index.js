@@ -9,14 +9,11 @@ const dotenv = require("dotenv");
 const dbConnect = require("./db/db");
 const Message = require("./model/message");
 const User = require("./controller/userController");
+
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
@@ -24,6 +21,10 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
 // ======Database connection=====
 dbConnect();
 
