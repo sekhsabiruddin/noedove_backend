@@ -17,12 +17,20 @@ const wss = new WebSocket.Server({ server });
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://neodove-frontend.vercel.app",
     credentials: true,
   })
 );
+//It for local
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
 
 // ======Database connection=====
 dbConnect();
