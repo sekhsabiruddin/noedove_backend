@@ -20,11 +20,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://neodove-frontend.vercel.app",
     credentials: true,
   })
 );
-
 // ======Database connection=====
 dbConnect();
 
