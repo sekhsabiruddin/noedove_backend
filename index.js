@@ -9,7 +9,7 @@ const dotenv = require("dotenv");
 const dbConnect = require("./db/db");
 const Message = require("./model/message");
 const User = require("./controller/userController");
-
+const { format, utcToZonedTime } = require("date-fns-tz");
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -36,7 +36,9 @@ dbConnect();
 
 const getCurrentTime = () => {
   const now = new Date();
-  return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const timeZone = "Asia/Kolkata";
+  const zonedTime = utcToZonedTime(now, timeZone);
+  return format(zonedTime, "HH:mm", { timeZone });
 };
 
 //========================== WebSocket server======================
