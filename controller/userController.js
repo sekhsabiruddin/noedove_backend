@@ -134,17 +134,6 @@ router.get(
   })
 );
 
-//=========================Get previous message =================
-const formatTimestamp = (timestamp) => {
-  const date = new Date(timestamp);
-  const formattedTime = date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-  return formattedTime;
-};
-
 // =====================get previous messages================
 router.get("/prev-messages", async (req, res, next) => {
   try {
@@ -154,18 +143,12 @@ router.get("/prev-messages", async (req, res, next) => {
         userId: 1,
         username: 1,
         content: 1,
-        timestamp: 1,
+        time: 1,
       }
     ).sort({ timestamp: 1 });
 
-    // Format timestamp and add formatted time to each message
-    const formattedMessages = messages.map((message) => ({
-      ...message._doc,
-      time: formatTimestamp(message.timestamp),
-    }));
-
     res.status(200).json({
-      messages: formattedMessages,
+      messages: messages,
     });
   } catch (error) {
     next(error);

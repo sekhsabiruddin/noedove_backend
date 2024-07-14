@@ -15,6 +15,12 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+// app.use(
+//   cors({
+//     origin: "http://localhost:5174",
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
     origin: ["https://neodove-frotned.vercel.app"],
@@ -39,6 +45,7 @@ wss.on("connection", async function connection(ws) {
     const messageData = JSON.parse(data);
     try {
       const currentTime = getCurrentTime();
+
       //========================It will save in DB=============================
       const newMessage = new Message({
         content: messageData.content,
@@ -46,7 +53,7 @@ wss.on("connection", async function connection(ws) {
         username: messageData.username,
         time: currentTime,
       });
-
+      // console.log("newMessage", newMessage);
       await newMessage.save();
 
       // ======================Prepare message with current time and username==================
