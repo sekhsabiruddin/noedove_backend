@@ -1,4 +1,3 @@
-// ./server.js
 const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
@@ -9,7 +8,7 @@ const dotenv = require("dotenv");
 const dbConnect = require("./db/db");
 const Message = require("./model/message");
 const User = require("./controller/userController");
-const { format, utcToZonedTime } = require("date-fns-tz");
+const getCurrentTimeInIndia = require("./utils/currenttime");
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -17,7 +16,7 @@ const wss = new WebSocket.Server({ server });
 
 // app.use(
 //   cors({
-//     origin: "http://localhost:5174",
+//     origin: "http://localhost:5173",
 //     credentials: true,
 //   })
 // );
@@ -34,19 +33,13 @@ app.use(express.urlencoded({ extended: true }));
 // ======Database connection=====
 dbConnect();
 
-const getCurrentTime = () => {
-  const now = new Date();
-  const timeZone = "Asia/Kolkata";
-  const zonedTime = utcToZonedTime(now, timeZone);
-  return format(zonedTime, "HH:mm", { timeZone });
-};
-
 //========================== WebSocket server======================
 wss.on("connection", async function connection(ws) {
   ws.on("message", async function incoming(data) {
     const messageData = JSON.parse(data);
     try {
-      const currentTime = getCurrentTime();
+      //here call the current time
+      const currentTime = await getCurrentTimeInIndia();
 
       //========================It will save in DB=============================
       const newMessage = new Message({
@@ -55,6 +48,7 @@ wss.on("connection", async function connection(ws) {
         username: messageData.username,
         time: currentTime,
       });
+
       // console.log("newMessage", newMessage);
       await newMessage.save();
 
