@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "https://neodove-frontend.vercel.app",
+    origin: "*",
     credentials: true,
   })
 );
